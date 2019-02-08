@@ -1,5 +1,9 @@
 package us.mattgreen;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -7,7 +11,7 @@ public class Main {
     private Scanner keyboard;
     private Cookbook cookbook;
 
-    public Main() {
+    public Main() throws FileNotFoundException {
         keyboard = new Scanner(System.in);
         cookbook = new Cookbook();
 
@@ -24,7 +28,7 @@ public class Main {
         runMenu();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         new Main();
     }
 
@@ -39,7 +43,7 @@ public class Main {
         System.out.print("Please Enter your Choice: ");
     }
 
-    private void runMenu() {
+    private void runMenu() throws FileNotFoundException {
         boolean userContinue = true;
 
         while (userContinue) {
@@ -57,7 +61,7 @@ public class Main {
                     searchByName();
                     break;
                 case "4":
-                    // doControlBreak();
+                    doControlBreak();
                     break;
                 case "5":
                     userContinue = false;
@@ -101,5 +105,20 @@ public class Main {
         System.out.print("Please Enter Value: ");
         String ans = keyboard.nextLine();
         cookbook.printByNameSearch(ans);
+    }
+    
+    private void doControlBreak() throws FileNotFoundException{
+        // sotre calories, but you don't need to store what meal type it is in an array. That's just being checked.
+        File file = new File("meals_data.csv");
+        Scanner sc = new Scanner(file);
+        String currentMealType = "";
+        String newMealType = "";
+        List<String> calories = new ArrayList<>();
+        while(sc.hasNextLine()){
+        String line = sc.nextLine();
+        String[] lineArray = line.split(",");
+            System.out.println(lineArray[0]);
+        }
+        
     }
 }
