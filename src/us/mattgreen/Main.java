@@ -111,13 +111,50 @@ public class Main {
         // sotre calories, but you don't need to store what meal type it is in an array. That's just being checked.
         File file = new File("meals_data.csv");
         Scanner sc = new Scanner(file);
-        String currentMealType = "";
+        String currentMealType = "nullValue";
         String newMealType = "";
-        List<String> calories = new ArrayList<>();
+        List<Integer> calories = new ArrayList<>();
+        System.out.println("\nMeal        Total  Mean  Min  Max Median");
         while(sc.hasNextLine()){
         String line = sc.nextLine();
         String[] lineArray = line.split(",");
-            System.out.println(lineArray[0]);
+            newMealType = (String)lineArray[0];
+            //check to see if the current meal is the one brought in.
+            if(newMealType.equals(currentMealType) || currentMealType.equals("nullValue")){
+                calories.add(Integer.parseInt(lineArray[2]));
+                if(currentMealType.equals("nullValue")){
+                    currentMealType = newMealType;
+                }
+            }
+            else{
+                //Just a simple bubble sort to get everything in order.
+                int totalEntries = calories.size(); 
+                int totalCalories = 0;
+                int median = totalEntries/2;
+                for (int i = 0; i < totalEntries-1; i++) {
+                    for (int j = 0; j < totalEntries-i-1; j++){
+                        if (calories.get(j).compareTo(calories.get(j+1)) > 0) 
+                        { 
+                            int temp = calories.get(j); 
+                            calories.set(j, calories.get(j+1));
+                            calories.set(j+1, temp);
+                        }
+                    }
+                }
+                //adding up all the calories
+                for(int i = 0; i < totalEntries; i++){
+                    totalCalories += calories.get(i);
+                }
+                //finding da mean
+                double daMean = totalCalories/(totalEntries * 1.0);
+                String mean = String.format("%.2f", daMean);
+                //system output
+                System.out.println(currentMealType + "   " + totalCalories + "  " + mean + "  " + calories.get(0) + "  " + calories.get(totalEntries-1) + "  " + calories.get(median));
+                currentMealType = newMealType;
+                //clearing the calories and inputting the first one of the next category that we sucked in
+                calories.clear();
+                calories.add(Integer.parseInt(lineArray[2]));
+            }
         }
         
     }
