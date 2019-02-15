@@ -3,7 +3,9 @@ package us.mattgreen;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -18,11 +20,34 @@ public class Main {
         FileInput indata = new FileInput("meals_data.csv");
 
         String line;
+        
+        Map<String, List<Integer>> mealCalorieMap = new HashMap();
 
         System.out.println("Reading in meals information from file...");
         while ((line = indata.fileReadLine()) != null) {
             String[] fields = line.split(",");
+            
+            String mealType = fields[0];
+            int calories = Integer.parseInt(fields[2]);
+            if (!mealCalorieMap.containsKey(mealType)){
+                mealCalorieMap.put(mealType, new ArrayList());
+            }
+            mealCalorieMap.get(mealType).add(calories);
+            
+            for(Map.Entry<String, List<Integer>> me: mealCalorieMap.entrySet()){
+                List<Integer> listOfMeals = me.getValue();
+                for(Integer c : listOfMeals){
+                    
+                }
+            }
+            
+            Map<String, Integer> studentsInJava = new HashMap<String, Integer>();
+            studentsInJava.put("Advanced", 18);
+            
+            studentsInJava.put("Advanced", studentsInJava.get("advanced")+1);
+            
             cookbook.addElementWithStrings(fields[0], fields[1], fields[2]);
+            
         }
 
         runMenu();
